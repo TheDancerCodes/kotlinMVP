@@ -30,6 +30,10 @@
 
 package com.thedancercodes.android.creaturemon.model
 
+/**
+ * A simple data class with an int value for each of the three creature attributes.
+ */
+
 data class CreatureAttributes(
     val intelligence: Int = 0,
     val strength: Int = 0,

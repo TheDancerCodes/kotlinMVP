@@ -30,4 +30,15 @@
 
 package com.thedancercodes.android.creaturemon.model
 
-class Creature
+/**
+ * Convert this model class to a data class & add properties for the creature attributes, hit points,
+ * name and also an int for the avatar drawable value.
+ */
+
+data class Creature(
+        val attributes: CreatureAttributes = CreatureAttributes(),
+        val hitPoints: Int = 0,
+        val name: String = "",
+        val drawable: Int = 0
+
+)
