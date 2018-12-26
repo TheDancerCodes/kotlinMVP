@@ -31,21 +31,54 @@
 package com.thedancercodes.android.creaturemon.model.room
 
 import android.os.AsyncTask
+import androidx.lifecycle.LiveData
 import com.thedancercodes.android.creaturemon.app.CreaturemonApplication
 import com.thedancercodes.android.creaturemon.model.Creature
 import com.thedancercodes.android.creaturemon.model.CreatureRepository
 
 class RoomRepository : CreatureRepository {
+
+  // property for the Creature DAO
   private val creatureDao: CreatureDao = CreaturemonApplication.database.creatureDao()
 
+  // All Creatures property, that asks the DAO for all Creatures in the init block.
+  private val allCreatures: LiveData<List<Creature>>
+
+  init {
+      allCreatures = creatureDao.getAllCreatures()
+  }
+
+  // Add methods from the Creature Repository interface using the AsyncTasks as needed.
+  override fun saveCreature(creature: Creature) {
+    InsertAsyncTask(creatureDao).execute(creature)
+  }
+
+  override fun getAllCreatures() = allCreatures
+
+  override fun clearAllCreatures() {
+    val creatureArray = allCreatures.value?.toTypedArray()
+
+    if (creatureArray != null) {
+      DeleteAsyncTask(creatureDao).execute(*creatureArray)
+    }
+  }
+
+  // AsyncTask to perform the creature insert in the background
   private class InsertAsyncTask internal constructor(private val dao: CreatureDao) : AsyncTask<Creature, Void, Void>() {
     override fun doInBackground(vararg params: Creature): Void? {
+
+      // Add a line to insert the creature using the DAO
+      dao.insert(params[0])
       return null
     }
   }
 
+  // AsyncTask to perform the creature delete in the background
   private class DeleteAsyncTask internal constructor(private val dao: CreatureDao) : AsyncTask<Creature, Void, Void>() {
     override fun doInBackground(vararg params: Creature): Void? {
+
+      // Add a line delete creatures using the DAO
+      dao.clearCreatures(*params)
       return null
     }
   }

@@ -30,4 +30,17 @@
 
 package com.thedancercodes.android.creaturemon.model
 
-interface CreatureRepository
+import androidx.lifecycle.LiveData
+
+/**
+ * We use an interface for the repository in part, because it would simplify switching to a
+ * different concrete repository other than Room if we needed to for some reason later in our
+ * project lifecycle.
+ */
+interface CreatureRepository {
+
+    // Create methods to  save a creature to, get all creatures from & clear all creatures in the repository.
+    fun saveCreature(creature: Creature)
+    fun getAllCreatures(): LiveData<List<Creature>>
+    fun clearAllCreatures()
+}

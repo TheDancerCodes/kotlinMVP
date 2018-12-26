@@ -30,15 +30,20 @@
 
 package com.thedancercodes.android.creaturemon.model
 
+import androidx.annotation.NonNull
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
 /**
  * Convert this model class to a data class & add properties for the creature attributes, hit points,
  * name and also an int for the avatar drawable value.
  */
 
+@Entity(tableName = "creature_table")
 data class Creature(
         val attributes: CreatureAttributes = CreatureAttributes(),
         val hitPoints: Int = 0,
-        val name: String = "",
+        @PrimaryKey @NonNull val name: String = "",
         val drawable: Int = 0
 
 )

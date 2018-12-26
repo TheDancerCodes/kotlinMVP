@@ -1,0 +1,33 @@
+KOTLIN MVP NOTES
+
+
+**Model Repository**
+
+
+Create a repository where we will save our model data.
+Our concrete repository is going to be a Room DB, we will use LiveData from the Android Arch Component Lib to retrieve data from the DB.
+
+
+CreatureRepository. Currently an empty interface.
+
+We use an interface for the for the repository in part, because it would simplify switching to a different concrete repository other than Room if we needed to for some reason later in our project lifecycle.
+
+We need the ability to save a creature to the repository, get all creatures from the repository and clear all creatures in the repository.
+We add those methods to the interface.,
+
+Inorder to store our creatures in Room, we’ll make them a Room entity using the creature table table.
+
+NOTE: We could have made a separate class for the Room entity and then provide mapping functions to convert between creature and creature entities
+    * But for this simple app, we will just make creature an entity directly.
+    * In a production app, you would likely want to create such a mapping layer between the model class and the repository.
+
+Since we are using Room, we need a creature DAO to access our creatures.
+
+Add insert, clear and getAllCreatures methods to this DAO.
+
+Tell DB about our new Creature entity
+    * Add a TypeConvertor for storing creature attributes in the DB.
+    * The CreatureAttributesConvertor class just converts the creature attributes for storage in Room.
+
+RoomRepository class: A concrete implementation of the Creature Repository interface
+The starter code has a property for the Creature DAO & some AsyncTask to perform the creature insert and delete in the background
