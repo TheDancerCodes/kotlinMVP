@@ -95,3 +95,31 @@ The starter code has a property for the Creature DAO & some AsyncTask to perform
 
         Example:
         When the user leaves the screen or rotates the device.
+
+
+    ** View Contract **
+
+    Creature Activity implements the AvatarAdapter.AvatarListener interface, which is just used for
+    when a user selects an avatar, in the AvatarChooser.
+
+
+    View Interface:
+
+    interface CreatureContract {
+
+            interface Presenter {
+                // ...
+            }
+
+            interface View {
+                fun showHitPoints(hitPoints: String)
+                fun showAvatarDrawable(@DrawableRes resourceId: Int)
+            }
+        }
+
+    NOTE:
+    * The View Interface has 2 methods:
+        - Lets the presenter tell the view to show the hit points calculated by the app model,
+        - Show the Creature Drawable.
+
+    * We will define the View Interface and implement it in Creature Activity.

@@ -41,17 +41,19 @@ import com.thedancercodes.android.creaturemon.R
 import com.thedancercodes.android.creaturemon.model.AttributeStore
 import com.thedancercodes.android.creaturemon.model.AttributeValue
 import com.thedancercodes.android.creaturemon.model.Avatar
+import com.thedancercodes.android.creaturemon.presenter.CreatureContract
 import com.thedancercodes.android.creaturemon.view.avatars.AvatarAdapter
 import com.thedancercodes.android.creaturemon.view.avatars.AvatarBottomDialogFragment
 import kotlinx.android.synthetic.main.activity_creature.*
 
 
-class CreatureActivity : AppCompatActivity(), AvatarAdapter.AvatarListener {
+class CreatureActivity : AppCompatActivity(), AvatarAdapter.AvatarListener, CreatureContract.View {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_creature)
 
+    // Configure methods for setting up the screen,
     configureUI()
     configureSpinnerAdapters()
     configureSpinnerListeners()
@@ -59,12 +61,14 @@ class CreatureActivity : AppCompatActivity(), AvatarAdapter.AvatarListener {
     configureClickListeners()
   }
 
+  // Sets up the screen chrome (i.e.) back button and title
   private fun configureUI() {
     supportActionBar?.setDisplayHomeAsUpEnabled(true)
     title = getString(R.string.add_creature)
     // TODO: hide label
   }
 
+  // Sets up attribute spinners with static data from a Kotlin object named AttributeStore
   private fun configureSpinnerAdapters() {
     intelligence.adapter = ArrayAdapter<AttributeValue>(this,
         android.R.layout.simple_spinner_dropdown_item, AttributeStore.INTELLIGENCE)
@@ -74,6 +78,7 @@ class CreatureActivity : AppCompatActivity(), AvatarAdapter.AvatarListener {
         android.R.layout.simple_spinner_dropdown_item, AttributeStore.ENDURANCE)
   }
 
+  // Sets up Listeners that get called when choices are made
   private fun configureSpinnerListeners() {
     intelligence.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
       override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -95,6 +100,7 @@ class CreatureActivity : AppCompatActivity(), AvatarAdapter.AvatarListener {
     }
   }
 
+    // Sets up a TextChangedListener for the name EditText
   private fun configureEditText() {
     nameEditText.addTextChangedListener(object : TextWatcher {
       override fun afterTextChanged(s: Editable?) {}
@@ -105,6 +111,7 @@ class CreatureActivity : AppCompatActivity(), AvatarAdapter.AvatarListener {
     })
   }
 
+    // Sets up ClickListeners for showing the Avatar Chooser & for the Save button.
   private fun configureClickListeners() {
     avatarImageView.setOnClickListener {
       val bottomDialogFragment = AvatarBottomDialogFragment.newInstance()
@@ -116,12 +123,22 @@ class CreatureActivity : AppCompatActivity(), AvatarAdapter.AvatarListener {
     }
   }
 
+    // Avatar Adapter Listener override
   override fun avatarClicked(avatar: Avatar) {
     // TODO: handle avatar clicked
     hideTapLabel()
   }
 
+    // Private helper function to hide the label: "Tap to select an avatar"
   private fun hideTapLabel() {
     tapLabel.visibility = View.INVISIBLE
   }
+
+    override fun showHitPoints(hitPoints: String) {
+        this.hitPoints.text = hitPoints
+    }
+
+    override fun showAvatarDrawable(resourceId: Int) {
+        avatarImageView.setImageResource(resourceId)
+    }
 }
