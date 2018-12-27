@@ -39,9 +39,11 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import com.thedancercodes.android.creaturemon.R
 import com.thedancercodes.android.creaturemon.model.AttributeStore
+import com.thedancercodes.android.creaturemon.model.AttributeType
 import com.thedancercodes.android.creaturemon.model.AttributeValue
 import com.thedancercodes.android.creaturemon.model.Avatar
 import com.thedancercodes.android.creaturemon.presenter.CreatureContract
+import com.thedancercodes.android.creaturemon.presenter.CreaturePresenter
 import com.thedancercodes.android.creaturemon.view.avatars.AvatarAdapter
 import com.thedancercodes.android.creaturemon.view.avatars.AvatarBottomDialogFragment
 import kotlinx.android.synthetic.main.activity_creature.*
@@ -49,9 +51,17 @@ import kotlinx.android.synthetic.main.activity_creature.*
 
 class CreatureActivity : AppCompatActivity(), AvatarAdapter.AvatarListener, CreatureContract.View {
 
+    // Add a property for the Presenter & instantiate it.
+    private val presenter = CreaturePresenter()
+
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_creature)
+
+      // Tell the Presenter that this View is its View,
+      // by calling the BasePresenter setView() method
+      presenter.setView(this)
 
     // Configure methods for setting up the screen,
     configureUI()
@@ -65,7 +75,9 @@ class CreatureActivity : AppCompatActivity(), AvatarAdapter.AvatarListener, Crea
   private fun configureUI() {
     supportActionBar?.setDisplayHomeAsUpEnabled(true)
     title = getString(R.string.add_creature)
-    // TODO: hide label
+
+      // A call to hideTapLabel if the Presenter says a drawable has been selected
+      if (presenter.isDrawableSelected()) hideTapLabel()
   }
 
   // Sets up attribute spinners with static data from a Kotlin object named AttributeStore
@@ -82,19 +94,19 @@ class CreatureActivity : AppCompatActivity(), AvatarAdapter.AvatarListener, Crea
   private fun configureSpinnerListeners() {
     intelligence.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
       override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        // TODO: handle selection
+        presenter.attributeSelected(AttributeType.INTELLIGENCE, position)
       }
       override fun onNothingSelected(parent: AdapterView<*>?) {}
     }
     strength.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
       override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        // TODO: handle selection
+        presenter.attributeSelected(AttributeType.STRENGTH, position)
       }
       override fun onNothingSelected(parent: AdapterView<*>?) {}
     }
     endurance.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
       override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        // TODO: handle selection
+        presenter.attributeSelected(AttributeType.ENDURANCE, position)
       }
       override fun onNothingSelected(parent: AdapterView<*>?) {}
     }
@@ -106,7 +118,7 @@ class CreatureActivity : AppCompatActivity(), AvatarAdapter.AvatarListener, Crea
       override fun afterTextChanged(s: Editable?) {}
       override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
       override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-        // TODO: handle text changed
+        presenter.updateName(s.toString())
       }
     })
   }
@@ -125,7 +137,7 @@ class CreatureActivity : AppCompatActivity(), AvatarAdapter.AvatarListener, Crea
 
     // Avatar Adapter Listener override
   override fun avatarClicked(avatar: Avatar) {
-    // TODO: handle avatar clicked
+    presenter.drawableSelected(avatar.drawable)
     hideTapLabel()
   }
 

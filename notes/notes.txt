@@ -123,3 +123,27 @@ The starter code has a property for the Creature DAO & some AsyncTask to perform
         - Show the Creature Drawable.
 
     * We will define the View Interface and implement it in Creature Activity.
+
+
+
+     ** Building the Presenter **
+
+        * With our Presenter & View contracts in place, we will create a CreaturePresenter for the
+            AddCreature Screen & then we will call the Presenter from the View.
+
+        * Create the CreaturePresenter class & have it extend the BasePresenter class typed by the
+            ViewContract
+
+
+     * Call updateCreature() to update the View whenever any of the creature state is changed.
+
+     * Have the presenter class implement the presenter interface.
+
+     * In CreatureActivity,we add a property for the Presenter & instantiate it.
+       - There's a one to one correspondence between the Presenter and the View, so we just create
+            a new Presenter object here.
+       - You could also use a Dependency Injection framework like Dagger to add the Presenter into the View.
+
+
+
+

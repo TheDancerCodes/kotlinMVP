@@ -3,7 +3,7 @@ package com.thedancercodes.android.creaturemon.presenter
 import java.lang.ref.WeakReference
 
 /**
- * This is an abstract class that taskes a generic parameter V for the type of the View that the
+ * This is an abstract class that takes a generic parameter V for the type of the View that the
  * Presenter communicates with
  */
 abstract class BasePresenter<V> {
