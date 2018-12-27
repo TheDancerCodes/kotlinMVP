@@ -1,7 +1,7 @@
 KOTLIN MVP NOTES
 
 
-**Model Repository**
+** Model Repository **
 
 
 Create a repository where we will save our model data.
@@ -31,3 +31,67 @@ Tell DB about our new Creature entity
 
 RoomRepository class: A concrete implementation of the Creature Repository interface
 The starter code has a property for the Creature DAO & some AsyncTask to perform the creature insert and delete in the background
+
+
+    ** Presenter Contract **
+
+    There are a couple of ways that developers used MVP in their Android Apps.
+    A common approach is to define interfaces for the View & Presenter and then have concrete classes
+    implement the interfaces.
+
+    Benefit:
+    * This approach allows you to mock the View interface when writing tests for the Presenter classes.
+    * Since the Presenter is not dependent on the Android SDK directly, you can write pure Unit tests for it.
+    * This speeds up the test cycle which encourages more testing & refactoring into better code.
+
+    NOTE:
+    * The View & Presenter interfaces are often combined into a common interface specifying the overall contract
+        between the two,
+
+    MVP Contract:
+
+    interface Contract {
+
+        interface Presenter {
+            // Methods View calls on Presenter
+        }
+
+        interface View {
+            // Methods Presenter calls on the View
+        }
+    }
+
+    NOTE:
+    The Presenter part of the contract contains methods called on the Presenter by the View &
+    vice varsa for the View part of the contract.
+
+    FOCUS AREA:
+    * AddCreaturePresenter: This presenter will keep track of the name entered by the user & the attributes &
+        drawable selected by the user.
+
+    * We will define the Presenter side of the contract.
+
+    * We also use a common technique: Define a BasePresenter class for the concrete presenters.
+
+
+    BasePresenter:
+
+    abstract class BasePresenter<V> {
+
+        private var view: WeakReference<V>? = null
+
+        fun setView(view: V) {
+            this.view = WeakReference(view)
+        }
+
+        protected fun getView(): V? = view?.get()
+    }
+
+    NOTE:
+    The Base Presenter contains code that all Presenters will need inorder to get hooked up with a View.
+
+    We use a WeakReference because typically the concrete View is an Activity or Fragment class & we
+        need those View objects to be correctly garbage collected when they are destroyed:
+
+        Example:
+        When the user leaves the screen or rotates the device.
