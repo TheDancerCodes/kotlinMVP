@@ -37,7 +37,7 @@ class CreaturePresenterTest {
         presenter.setView(view)
     }
 
-    // Test for what happens when an intelligence value is selected in the view.
+    // Test for what happens when an Intelligence value is selected in the view.
     @Test
     fun testIntelligenceSelected() {
         val attributes = CreatureAttributes(10, 0, 0)
@@ -53,6 +53,31 @@ class CreaturePresenterTest {
 
         // Verify that Presenter calls "Show Hit Points" on the View with the correct value.
         verify(view, times(1)).showHitPoints("50")
+    }
+
+    // Test for what happens when a Strength value is selected in the view.
+    @Test
+    fun testStrengthSelected() {
+        val attributes = CreatureAttributes(0, 3, 0)
+        val stubCreature = Creature(attributes, 9)
+        `when`(mockGenerator.generateCreature(attributes)).thenReturn(stubCreature)
+
+        presenter.attributeSelected(AttributeType.STRENGTH, 1)
+
+        // Verify that Presenter calls "Show Hit Points" on the View with the correct value.
+        verify(view, times(1)).showHitPoints("9")
+    }
+
+    // Test for what happens when an Endurance value is selected in the view.
+    @Test
+    fun testEnduranceSelected() {
+        val attributes = CreatureAttributes(0, 0, 7)
+        val stubCreature = Creature(attributes, 28 )
+        `when`(mockGenerator.generateCreature(attributes)).thenReturn(stubCreature)
+
+        presenter.attributeSelected(AttributeType.ENDURANCE, 2)
+
+        verify(view, times(1)).showHitPoints("28")
     }
 
 
