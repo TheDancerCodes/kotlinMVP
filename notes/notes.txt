@@ -146,4 +146,21 @@ The starter code has a property for the Creature DAO & some AsyncTask to perform
 
 
 
+     ** Testing the Presenter **
+
+        * We'll verify that the Presenter tells the View to update with the correct Hit Points value
+            when a user selects a value for the creatures intelligence.
+
+        * Since the Presenter depends on Creature Generator in the model layer, we'll create a mock
+            Creature Generator in our Presenter Test to ensure that we are isolating the test to the Presenter.
+
+        * We create the mock Creature Generator using the Mockito library.
+
+
+        NOTE:
+        * We want to avoid spinning up an Android emulator for our Presenter Test, so we use a mock
+            for the View that the Presenter under test will interact with.
+
+
+
 
