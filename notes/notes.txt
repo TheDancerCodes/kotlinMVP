@@ -162,5 +162,22 @@ The starter code has a property for the Creature DAO & some AsyncTask to perform
             for the View that the Presenter under test will interact with.
 
 
+     ** Saving to the Repository **
+
+        * We will save creatures to the repository we previously set up.
+
+        * We need to update our Contract between the Presenter & View to handle the save use case.
+            -> Add saveCreature() function to Presenter interface.
+            -> Add showCreatureSaved() & showCreatureSaveError() functions to View interface.
+
+        * In CreaturePresenter, add a repository property to connect the Presenter to the Creature Repository.
+
+        NOTE:
+        If your app is sufficiently complex, you may want to use a dependency injection framework
+            like Dagger 2 or Koin inject the repository into the Presenter.
+
+
+
+
 
 

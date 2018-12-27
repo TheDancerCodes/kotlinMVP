@@ -1,12 +1,14 @@
 package com.thedancercodes.android.creaturemon.presenter
 
 import com.thedancercodes.android.creaturemon.model.*
+import com.thedancercodes.android.creaturemon.model.room.RoomRepository
 
 
 /**
  * CreaturePresenter extends the BasePresenter class typed by the ViewContract
  */
-class CreaturePresenter(private val generator: CreatureGenerator = CreatureGenerator())
+class CreaturePresenter(private val generator: CreatureGenerator = CreatureGenerator(),
+                        private val repository: CreatureRepository = RoomRepository())
     : BasePresenter<CreatureContract.View>(), CreatureContract.Presenter {
 
     // Enables Presenter to keep track of the state of the creature being created in the Activity
@@ -16,21 +18,10 @@ class CreaturePresenter(private val generator: CreatureGenerator = CreatureGener
     // using typed inference to set the types.
 
     private var name = ""
-    private var intellgence = 0
+    private var intelligence = 0
     private var strength = 0
     private var endurance = 0
     private var drawable = 0
-
-
-    // Private function to set the creature value for the Presenter based on this local state &
-    //   make a call into the View to show the creature Hit Points value.
-    private fun updateCreature() {
-        val attributes = CreatureAttributes(intellgence, strength, endurance)
-
-        creature =  generator.generateCreature(attributes, name, drawable)
-
-        getView()?.showHitPoints(creature.hitPoints.toString())
-    }
 
 
     override fun updateName(name: String) {
@@ -41,7 +32,7 @@ class CreaturePresenter(private val generator: CreatureGenerator = CreatureGener
     override fun attributeSelected(attributeType: AttributeType, position: Int) {
         when (attributeType) {
             AttributeType.INTELLIGENCE ->
-                intellgence = AttributeStore.INTELLIGENCE[position].value
+                intelligence = AttributeStore.INTELLIGENCE[position].value
             AttributeType.STRENGTH ->
                 strength = AttributeStore.STRENGTH[position].value
             AttributeType.ENDURANCE ->
@@ -60,5 +51,30 @@ class CreaturePresenter(private val generator: CreatureGenerator = CreatureGener
 
     override fun isDrawableSelected(): Boolean {
         return drawable != 0
+    }
+
+    // Private function to set the creature value for the Presenter based on this local state &
+    //   make a call into the View to show the creature Hit Points value.
+    private fun updateCreature() {
+        val attributes = CreatureAttributes(intelligence, strength, endurance)
+
+        creature =  generator.generateCreature(attributes, name, drawable)
+
+        getView()?.showHitPoints(creature.hitPoints.toString())
+    }
+
+    // Helper method to prevent saving of blank attributes
+    private fun canSaveCreature(): Boolean {
+        return intelligence != 0 && strength != 0 && endurance != 0 &&
+                name.isNotEmpty() && drawable != 0
+    }
+
+    override fun saveCreature() {
+        if (canSaveCreature()) {
+            repository.saveCreature(creature)
+            getView()?.showCreatureSaved()
+        } else {
+            getView()?.showCreatureSaveError()
+        }
     }
 }

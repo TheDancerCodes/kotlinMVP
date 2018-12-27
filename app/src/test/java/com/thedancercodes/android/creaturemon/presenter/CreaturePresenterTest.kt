@@ -1,9 +1,6 @@
 package com.thedancercodes.android.creaturemon.presenter
 
-import com.thedancercodes.android.creaturemon.model.AttributeType
-import com.thedancercodes.android.creaturemon.model.Creature
-import com.thedancercodes.android.creaturemon.model.CreatureAttributes
-import com.thedancercodes.android.creaturemon.model.CreatureGenerator
+import com.thedancercodes.android.creaturemon.model.*
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -24,6 +21,10 @@ class CreaturePresenterTest {
     @Mock
     lateinit var mockGenerator: CreatureGenerator
 
+    // Property for the mock Creature Repository for the Presenter.
+    @Mock
+    lateinit var mockRepository: CreatureRepository
+
     @Before
     fun setUp() {
 
@@ -31,7 +32,7 @@ class CreaturePresenterTest {
         MockitoAnnotations.initMocks(this)
 
         // Set up presenter to be tested.
-        presenter = CreaturePresenter(mockGenerator)
+        presenter = CreaturePresenter(mockGenerator, mockRepository)
 
         // Set presenter view to be the mock view
         presenter.setView(view)
@@ -79,7 +80,4 @@ class CreaturePresenterTest {
 
         verify(view, times(1)).showHitPoints("28")
     }
-
-
-
 }

@@ -16,6 +16,7 @@ interface CreatureContract {
         fun attributeSelected(attributeType: AttributeType, position: Int)
         fun drawableSelected(drawable: Int)
         fun isDrawableSelected(): Boolean
+        fun saveCreature()
     }
 
     interface View {
@@ -25,5 +26,8 @@ interface CreatureContract {
 
         // Tells View to show a creature avatar drawable
         fun showAvatarDrawable(@DrawableRes resourceId: Int)
+
+        fun showCreatureSaved()
+        fun showCreatureSaveError()
     }
 }
