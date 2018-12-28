@@ -177,6 +177,53 @@ The starter code has a property for the Creature DAO & some AsyncTask to perform
             like Dagger 2 or Koin inject the repository into the Presenter.
 
 
+     **  Implement MVP **
+
+     * Create an All Creatures Contract
+
+     * Create AllCreaturesPresenter & put a repository property in its constructor.
+
+
+     * AllCreaturesPresenter extends BasePresenter of AllCreatureContract.View & it also impplements
+        the AllCreaturesContract.Presenter interface.
+
+     NOTE:
+        * In a production app, you'd want to add more error handling around the repository call to
+            make sure that the clearAllCreatures call successfully finished.
+
+     * Add a string to strings.xml in the res/values folder that we'll use for the clearAllCreatures message.
+
+
+     * Have the AllCreaturesActivity implement the new View interface.
+
+     NOTE:
+     * If we rotate the device, the presenter is recreated in the new activity object that exists after the rotation.
+
+     * Configuration changes like this are where the architecture component ViewModel
+            (that you may use in an MVVM-based app) can be useful because the ViewModel itself survives
+            a rotation unlike a Presenter which must be recreated.
+
+     * The ViewModel is just re-associated with the new activity instance.
+
+
+     🚀 ** CONCLUSION ** 🚀
+
+     * Built 2 screens with Presenters: To connect Model and View layers.
+     * Used View-Presenter Contracts
+     * Used JUnit and Mockito for testing the Presenter.
+     * Added Repository pattern to connect to Room database.
+
+
+     WHERE TO GO FROM HERE: 🤔
+
+     * MVVM: Uses ViewModel class & DataBinding.
+     * MVI: Unidirectional pattern to safely & effectively manage app state.
+     * MVVM-P: Combination of patterns.
+     * Clean Architecture: for more complicated apps, combine with the presentation architecture like
+        MVP for the user interface.
+
+
+
 
 
 

@@ -36,6 +36,7 @@ import android.view.ViewGroup
 import com.thedancercodes.android.creaturemon.R
 import com.thedancercodes.android.creaturemon.app.inflate
 import com.thedancercodes.android.creaturemon.model.Creature
+import kotlinx.android.synthetic.main.list_item_creature.view.*
 
 class CreatureAdapter(private val creatures: MutableList<Creature>)
   : RecyclerView.Adapter<CreatureAdapter.ViewHolder>() {
@@ -62,7 +63,11 @@ class CreatureAdapter(private val creatures: MutableList<Creature>)
 
     fun bind(creature: Creature) {
       this.creature = creature
-      // TODO: populate views
+
+      //  Populate VH itemView with data from the creature in the row.
+      itemView.avatarListItem.setImageDrawable(itemView.context.getDrawable(creature.drawable))
+      itemView.name.text = creature.name
+      itemView.hitPoints.text = creature.hitPoints.toString()
     }
   }
 }
